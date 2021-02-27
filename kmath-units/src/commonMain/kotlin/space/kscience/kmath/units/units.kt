@@ -46,28 +46,28 @@ public object MeasureAlgebra : Algebra<Measure> {
         }
 }
 
-public val MeasureAlgebra.rad: Measure get() = pure
-public val MeasureAlgebra.sr: Measure get() = pure
-public val MeasureAlgebra.degC: Measure get() = K
-public val MeasureAlgebra.Hz: Measure get() = pure / s
-public val MeasureAlgebra.N: Measure get() = kg * m * (pure / (s * s))
-public val MeasureAlgebra.J: Measure get() = N * m
-public val MeasureAlgebra.W: Measure get() = J / s
-public val MeasureAlgebra.Pa: Measure get() = N / (m * m)
-public val MeasureAlgebra.lm: Measure get() = cd * sr
-public val MeasureAlgebra.lx: Measure get() = lm / (m * m)
-public val MeasureAlgebra.C: Measure get() = A * s
-public val MeasureAlgebra.Ω: Measure get() = V / A
-public val MeasureAlgebra.V: Measure get() = J / C
-public val MeasureAlgebra.F: Measure get() = C / V
-public val MeasureAlgebra.Wb: Measure get() = kg * m * m * (pure / (s * s)) * (pure / A)
-public val MeasureAlgebra.T: Measure get() = Wb / (m * m)
-public val MeasureAlgebra.H: Measure get() = kg * m * m * (pure / (s * s)) * (pure / (A * A))
-public val MeasureAlgebra.S: Measure get() = pure / Ω
-public val MeasureAlgebra.Bq: Measure get() = pure / s
-public val MeasureAlgebra.Gy: Measure get() = J / kg
-public val MeasureAlgebra.Sv: Measure get() = J / kg
-public val MeasureAlgebra.kat: Measure get() = mol / s
+public val rad: Measure get() = MeasureAlgebra.pure
+public val sr: Measure get() = MeasureAlgebra.pure
+public val degC: Measure get() = MeasureAlgebra.K
+public val Hz: Measure get() = MeasureAlgebra { pure / s }
+public val N: Measure get() = MeasureAlgebra { kg * m * (pure / (s * s)) }
+public val J: Measure get() = MeasureAlgebra { N * m }
+public val W: Measure get() = MeasureAlgebra { J / s }
+public val Pa: Measure get() = MeasureAlgebra { N / (m * m) }
+public val lm: Measure get() = MeasureAlgebra { cd * sr }
+public val lx: Measure get() = MeasureAlgebra { lm / (m * m) }
+public val C: Measure get() = MeasureAlgebra { A * s }
+public val Ω: Measure get() = MeasureAlgebra { V / A }
+public val V: Measure get() = MeasureAlgebra { J / C }
+public val F: Measure get() = MeasureAlgebra { C / V }
+public val Wb: Measure get() = MeasureAlgebra { kg * m * m * (pure / (s * s)) * (pure / A) }
+public val T: Measure get() = MeasureAlgebra { Wb / (m * m) }
+public val H: Measure get() = MeasureAlgebra { kg * m * m * (pure / (s * s)) * (pure / (A * A)) }
+public val S: Measure get() = MeasureAlgebra { pure / Ω }
+public val Bq: Measure get() = MeasureAlgebra { pure / s }
+public val Gy: Measure get() = MeasureAlgebra { J / kg }
+public val Sv: Measure get() = MeasureAlgebra { J / kg }
+public val kat: Measure get() = MeasureAlgebra { mol / s}
 
 public open class MeasurementSpace<T>(public open val algebra: Space<T>) : Space<Measurement<T>> {
     public override val zero: Measurement<T>
