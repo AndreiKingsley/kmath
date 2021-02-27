@@ -67,7 +67,7 @@ public val S: Measure get() = MeasureAlgebra { pure / Ω }
 public val Bq: Measure get() = MeasureAlgebra { pure / s }
 public val Gy: Measure get() = MeasureAlgebra { J / kg }
 public val Sv: Measure get() = MeasureAlgebra { J / kg }
-public val kat: Measure get() = MeasureAlgebra { mol / s}
+public val kat: Measure get() = MeasureAlgebra { mol / s }
 
 public open class MeasurementSpace<T>(public open val algebra: Space<T>) : Space<Measurement<T>> {
     public override val zero: Measurement<T>
