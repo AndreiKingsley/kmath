@@ -1,15 +1,15 @@
+import ru.mipt.npm.gradle.Maturity
+
 plugins {
     id("ru.mipt.npm.gradle.mpp")
 }
 
-description = "Binding for https://github.com/JetBrains-Research/viktor"
-
 kotlin.sourceSets.commonMain {
     dependencies {
-        api(project(":kmath-ast"))
+        api(project(":kmath-core"))
     }
 }
 
 readme {
-    maturity = ru.mipt.npm.gradle.Maturity.PROTOTYPE
+    maturity = Maturity.PROTOTYPE
 }
