@@ -81,14 +81,7 @@ public object MeasureAlgebra : Algebra<Measure> {
             else newChain[k] = v
         }
 
-        return Measure(
-            mapOf(*newChain
-                .entries
-                .sortedBy { (k, _) -> k.ordinal }
-                .map(MutableMap.MutableEntry<BaseUnits, Int>::toPair)
-                .toTypedArray()),
-            a.multiplier * b.multiplier,
-        )
+        return Measure(newChain, a.multiplier * b.multiplier)
     }
 
     public fun divide(a: Measure, b: Measure): Measure =
