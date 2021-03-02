@@ -1,8 +1,10 @@
 package space.kscience.kmath.units
 
 import space.kscience.kmath.operations.*
+import space.kscience.kmath.units.pow
 import kotlin.jvm.JvmName
 import kotlin.math.PI
+import kotlin.math.pow
 
 /**
  * Represents base units of International System of Units.
@@ -208,12 +210,22 @@ public fun m(measure: Measure): Measure = measure.copy(multiplier = measure.mult
 public fun c(measure: Measure): Measure = measure.copy(multiplier = measure.multiplier * 1e-2)
 public fun d(measure: Measure): Measure = measure.copy(multiplier = measure.multiplier * 1e-1)
 
+public infix fun Measure.pow(power: Int): Measure =
+    copy(chain = chain.mapValues { (_, v) -> IntRing.power(v, power) }, multiplier = multiplier.pow(power))
+
+fun main() {
+    m.pow(1)
+}
+
 public open class MeasurementSpace<T>(public open val algebra: Space<T>) : Space<Measurement<T>> {
     public override val zero: Measurement<T>
         get() = Measurement(pure, algebra.zero)
 
     public override fun add(a: Measurement<T>, b: Measurement<T>): Measurement<T> {
-        require(a.measure.chain == b.measure.chain) { "The units are incompatible. The chains are ${a.measure.chain} and ${b.measure.chain}" }
+        require(a.measure.chain == b.measure.chain) {
+            "The units are incompatible. The chains are ${a.measure.chain} and ${b.measure.chain}"
+        }
+
         return Measurement(Measure(a.measure.chain),
             algebra { a.value * a.measure.multiplier + b.value * b.measure.multiplier })
     }

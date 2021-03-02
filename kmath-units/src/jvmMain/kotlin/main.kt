@@ -17,4 +17,15 @@ public fun main() {
     }
 
     println(res)
+
+    res = with(MeasurementExtendedField(RealField)) {
+        val P = 100000.0 * Pa
+        val V = 0.0227 * (m pow 3)
+        val nu = 1.0 * mol
+        val T = 273.0 * K
+        P * V / (nu * T)
+    }
+
+    println(res)
 }
+
