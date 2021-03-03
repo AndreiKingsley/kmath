@@ -206,11 +206,15 @@ public fun d(measure: Measure): Measure = measure.copy(multiplier = measure.mult
 public infix fun Measure.pow(power: Int): Measure =
     copy(chain = chain.mapValues { (_, v) -> IntRing.power(v, power) }, multiplier = multiplier.pow(power))
 
-fun main() {
-    m.pow(1)
+public open class MeasurementAlgebra<T>(public open val algebra: Algebra<T>) : Algebra<Measurement<T>> {
+    public operator fun T.times(m: Measure): Measurement<T> = Measurement(m, this)
+    public operator fun Measurement<T>.times(m: Measure): Measurement<T> = copy(measure = MeasureAlgebra { measure * m })
+
+    public override fun bindSymbol(value: String): Measurement<T> = algebra.bindSymbol(value) * pure
 }
 
-public open class MeasurementSpace<T>(public open val algebra: Space<T>) : Space<Measurement<T>> {
+public open class MeasurementSpace<T>(public override val algebra: Space<T>) : MeasurementAlgebra<T>(algebra),
+    Space<Measurement<T>> {
     public override val zero: Measurement<T>
         get() = Measurement(pure, algebra.zero)
 
@@ -225,8 +229,6 @@ public open class MeasurementSpace<T>(public open val algebra: Space<T>) : Space
 
     public override fun multiply(a: Measurement<T>, k: Number): Measurement<T> =
         Measurement(a.measure, algebra { a.value * k })
-
-    public operator fun T.times(m: Measure): Measurement<T> = Measurement(m, this)
 }
 
 public open class MeasurementRing<T>(override val algebra: Ring<T>) : MeasurementSpace<T>(algebra),

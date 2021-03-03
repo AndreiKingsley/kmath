@@ -25,18 +25,16 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":kmath-ast"))
-    implementation(project(":kmath-kotlingrad"))
-    implementation(project(":kmath-core"))
     implementation(project(":kmath-coroutines"))
     implementation(project(":kmath-commons"))
     implementation(project(":kmath-complex"))
     implementation(project(":kmath-stat"))
     implementation(project(":kmath-viktor"))
+    implementation(project(":kmath-nd4j"))
     implementation(project(":kmath-dimensions"))
     implementation(project(":kmath-ejml"))
-    implementation(project(":kmath-nd4j"))
-
+    implementation(project(":kmath-kotlingrad"))
+    implementation(project(":kmath-units"))
     implementation(project(":kmath-for-real"))
 
     implementation("org.deeplearning4j:deeplearning4j-core:1.0.0-beta7")
@@ -52,8 +50,6 @@ dependencies {
 //    } else
     implementation("org.nd4j:nd4j-native-platform:1.0.0-beta7")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-io:0.2.0-npm-dev-11")
-    implementation("org.jetbrains.kotlinx:kotlinx.benchmark.runtime:0.2.0-dev-20")
     implementation("org.slf4j:slf4j-simple:1.7.30")
 
     // plotting
@@ -98,6 +94,7 @@ kotlin.sourceSets.all {
     with(languageSettings) {
         useExperimentalAnnotation("kotlin.contracts.ExperimentalContracts")
         useExperimentalAnnotation("kotlin.ExperimentalUnsignedTypes")
+        useExperimentalAnnotation("kotlin.time.ExperimentalTime")
     }
 }
 
