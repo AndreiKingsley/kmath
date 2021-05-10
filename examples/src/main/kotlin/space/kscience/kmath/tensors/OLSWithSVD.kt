@@ -19,7 +19,7 @@ fun main() {
 
     // work in context with linear operations
     DoubleTensorAlgebra {
-        // take coefficient vector from normal distribution
+        // take coefficient vect    or from normal distribution
         val alpha = randomNormal(
             intArrayOf(5),
             randSeed
@@ -54,15 +54,15 @@ fun main() {
         println("Estimated alpha:\n" +
                 "$alphaOLS")
 
-        // figure out MSE of approximation
-        fun mse(yTrue: DoubleTensor, yPred: DoubleTensor): Double {
+        // figure out RMSE of approximation
+        fun rmse(yTrue: DoubleTensor, yPred: DoubleTensor): Double {
             require(yTrue.shape.size == 1)
             require(yTrue.shape contentEquals yPred.shape)
 
             val diff = yTrue - yPred
-            return diff.dot(diff).sqrt().value()
+            return ((diff dot diff) / yTrue.shape[0].toDouble()).sqrt().value()
         }
 
-        println("MSE: ${mse(alpha, alphaOLS)}")
+        println("RMSE: ${rmse(alpha, alphaOLS)}")
     }
 }
