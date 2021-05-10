@@ -508,7 +508,7 @@ public open class DoubleTensorAlgebra :
         DoubleTensor(tensor.shape, getRandomNormals(tensor.shape.reduce(Int::times), seed))
 
     /**
-     * Concatenates a sequence of tensors with equal shapes along the first dimension.
+     * Concatenates a list of tensors with equal shapes along the new dimension.
      *
      * @param tensors the [List] of tensors with same shapes to concatenate
      * @return tensor with concatenation result
@@ -521,6 +521,41 @@ public open class DoubleTensorAlgebra :
         val resBuffer = tensors.flatMap {
             it.tensor.mutableBuffer.array().drop(it.tensor.bufferStart).take(it.tensor.numElements)
         }.toDoubleArray()
+        return DoubleTensor(resShape, resBuffer, 0)
+    }
+
+    /**
+     * Concatenates a list of tensors with equal shapes along the given dimension.
+     *
+     * @param tensors the [List] of tensors with same shapes to concatenate
+     * @param dim the dimension to concatenate
+     * @return tensor with concatenation result
+     */
+    public fun stack(tensors: List<Tensor<Double>>, dim: Int): DoubleTensor {
+        check(tensors.isNotEmpty()) { "List must have at least 1 element" }
+        check(dim < tensors[0].dimension) { "Dimension $dim out of range ${tensors[0].dimension}" }
+        val shapePrefix = tensors[0].shape.take(dim).toIntArray()
+        val shapeSuffix = tensors[0].shape.drop(dim + 1).toIntArray()
+        check(tensors.all {
+            it.shape.take(dim).toIntArray() + it.shape.drop(dim + 1).toIntArray() contentEquals
+                    shapePrefix + shapeSuffix
+        }) { "Tensors incompatible shapes" }
+        val resShape = shapePrefix + tensors.sumOf { it.shape[dim] } + shapeSuffix
+        val buff = mutableListOf<Double>()
+        val arrsSzs = tensors.map { it.toDoubleTensor().toDoubleArray() }.zip(tensors.map { it.shape[dim] })
+        val p = if (shapePrefix.isNotEmpty() || shapeSuffix.isNotEmpty()) {
+            (shapePrefix+shapeSuffix).reduce(Int::times)
+        } else {
+            1
+        }
+        for (offset in 0 until p) {
+           for ((arr, sz) in arrsSzs) {
+               buff.addAll(
+                   arr.drop(offset * sz).take(sz)
+               )
+           }
+        }
+        val resBuffer = buff.toDoubleArray()
         return DoubleTensor(resShape, resBuffer, 0)
     }
 
@@ -580,7 +615,6 @@ public open class DoubleTensorAlgebra :
         foldDim({ x ->
             x.withIndex().maxByOrNull { it.value }?.index!!.toDouble()
         }, dim, keepDim)
-
 
     override fun Tensor<Double>.mean(): Double = this.fold { it.sum() / tensor.numElements }
 

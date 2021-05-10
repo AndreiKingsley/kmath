@@ -105,9 +105,11 @@ internal fun DoubleTensor.toPrettyString(): String = buildString {
         append(']')
         charOffset -= 1
 
-        index.reversed().zip(shape.reversed()).drop(1).forEach { (ind, maxInd) ->
+        val indToMaxInd =  index.reversed().zip(shape.reversed()).drop(1)
+
+        for ((ind, maxInd) in indToMaxInd) {
             if (ind != maxInd - 1) {
-                return@forEach
+                break
             }
             append(']')
             charOffset -= 1
