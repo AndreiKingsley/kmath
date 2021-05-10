@@ -19,7 +19,7 @@ fun main() {
 
     // work in context with linear operations
     DoubleTensorAlgebra {
-        // take coefficient vect    or from normal distribution
+        // take coefficient vector from normal distribution
         val alpha = randomNormal(
             intArrayOf(5),
             randSeed
